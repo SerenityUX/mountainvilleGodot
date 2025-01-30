@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=4 uid="uid://dc0pwwer4kc71"]
+
+[ext_resource type="Texture2D" uid="uid://5wppe5dwmvix" path="res://Sprite-0005.png" id="1_b7xjj"]
+[ext_resource type="PackedScene" uid="uid://cj0leja0bi3ha" path="res://icon.tscn" id="2_bi65g"]
+[ext_resource type="PackedScene" uid="uid://dmug1epffv0c2" path="res://player.tscn" id="3_sancv"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1ao5t"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8p1fm"]
+texture = ExtResource("1_b7xjj")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, 4.8125, -0.75, 5.3125, -1.125, 1, -0.125, 0.1875, 8, -0.0625)
+3:0/0 = 0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 4.75, 4.125, 5.0625, 4.125, 0, -8, 0.125)
+0:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_dj7mr"]
+physics_layer_0/collision_layer = 1
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_1ao5t")
+sources/0 = SubResource("TileSetAtlasSource_8p1fm")
+
+[node name="Root" type="Node2D"]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+texture_filter = 1
+position = Vector2(467, 241)
+scale = Vector2(4, 4)
+tile_map_data = PackedByteArray("AAD//wIAAAAAAAIAAAD//wEAAAAAAAEAAAABAAQAAAAAAAAAAAAAAAQAAAAAAAAAAAD//wQAAAAAAAAAAAD+/wQAAAAAAAAAAAABAAMAAAABAAAAAAAAAAMAAAABAAAAAAD//wMAAAABAAAAAAD+/wMAAAABAAAAAAD9/wQAAAAAAAAAAAD9/wUAAAAAAAAAAAD+/wUAAAAAAAAAAAD//wUAAAAAAAAAAAAAAAUAAAAAAAAAAAD9/wMAAAABAAAAAAABAAUAAAAAAAAAAAAEAAIAAAADAAAAAAADAAIAAAACAAAAAAA=")
+tile_set = SubResource("TileSet_dj7mr")
+
+[node name="Icon" parent="." instance=ExtResource("2_bi65g")]
+
+[node name="Player" parent="." instance=ExtResource("3_sancv")]
+position = Vector2(319, 345)
+scale = Vector2(4, 4)
