@@ -1,0 +1,118 @@
+[gd_scene load_steps=13 format=4 uid="uid://byajptxrcxnuk"]
+
+[ext_resource type="Texture2D" uid="uid://5wppe5dwmvix" path="res://Sprite-0005.png" id="1_3ohtm"]
+[ext_resource type="Script" path="res://rope_connection.gd" id="2_1skc0"]
+[ext_resource type="PackedScene" uid="uid://dmug1epffv0c2" path="res://player.tscn" id="3_hqyio"]
+[ext_resource type="Script" path="res://player2.gd" id="4_0ooy3"]
+[ext_resource type="Script" path="res://transporter.gd" id="5_wybje"]
+[ext_resource type="Texture2D" uid="uid://db4a3o0ppi0n7" path="res://sage.png" id="6_fntk7"]
+[ext_resource type="Texture2D" uid="uid://cmbpvrisorrli" path="res://myDog.png" id="7_t4vhr"]
+[ext_resource type="Script" path="res://auto_move.gd" id="8_cw8sl"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1ao5t"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8p1fm"]
+texture = ExtResource("1_3ohtm")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, 4.8125, -0.75, 5.3125, -1.125, 1, -0.125, 0.1875, 8, -0.0625)
+3:0/0 = 0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 4.75, 4.125, 5.0625, 4.125, 0, -8, 0.125)
+0:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_dj7mr"]
+physics_layer_0/collision_layer = 1
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_1ao5t")
+sources/0 = SubResource("TileSetAtlasSource_8p1fm")
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vl430"]
+radius = 8.5
+height = 22.0
+
+[node name="Level 0" type="Node2D"]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(467, 241)
+scale = Vector2(4, 4)
+tile_map_data = PackedByteArray("AAD//wQAAAAAAAAAAAD+/wQAAAAAAAAAAAABAAMAAAABAAAAAAAAAAMAAAABAAAAAAD9/wQAAAAAAAAAAAABAAQAAAAAAAAAAAAAAAQAAAAAAAAAAAD9/wUAAAAAAAAAAAD+/wUAAAAAAAAAAAD//wUAAAAAAAAAAAAAAAUAAAAAAAAAAAABAAUAAAAAAAAAAAACAAUAAAAAAAAAAAADAAUAAAAAAAAAAAADAAQAAAAAAAAAAAACAAQAAAAAAAAAAAD8/wUAAAAAAAAAAAD7/wUAAAAAAAAAAAD7/wQAAAAAAAAAAAD8/wQAAAAAAAAAAAD6/wUAAAAAAAAAAAD5/wUAAAAAAAAAAAD4/wYAAAAAAAAAAAD5/wYAAAAAAAAAAAD6/wYAAAAAAAAAAAD7/wYAAAAAAAAAAAD8/wYAAAAAAAAAAAD9/wYAAAAAAAAAAAD+/wYAAAAAAAAAAAD//wYAAAAAAAAAAAAAAAYAAAAAAAAAAAABAAYAAAAAAAAAAAACAAYAAAAAAAAAAAADAAYAAAAAAAAAAAAEAAYAAAAAAAAAAAAFAAYAAAAAAAAAAAAGAAYAAAAAAAAAAAAGAAUAAAAAAAAAAAAHAAUAAAAAAAAAAAAIAAUAAAAAAAAAAAAJAAUAAAAAAAAAAAAKAAUAAAAAAAAAAAAKAAYAAAAAAAAAAAAJAAYAAAAAAAAAAAAIAAYAAAAAAAAAAAAHAAYAAAAAAAAAAAD6/wQAAAAAAAAAAAD5/wQAAAAAAAAAAAD5/wMAAAABAAAAAAD7/wMAAAABAAAAAAD8/wMAAAABAAAAAAD9/wMAAAABAAAAAAD+/wMAAAABAAAAAAD//wMAAAABAAAAAAD6/wMAAAABAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAAAAAAAAAAFAAUAAAAAAAAAAAAFAAQAAAAAAAAAAAAGAAQAAAAAAAAAAAAHAAQAAAAAAAAAAAAIAAQAAAAAAAAAAAAJAAQAAAAAAAAAAAAKAAQAAAAAAAAAAAAKAAMAAAABAAAAAAAJAAMAAAABAAAAAAAIAAMAAAABAAAAAAAHAAMAAAABAAAAAAAGAAMAAAABAAAAAAAFAAMAAAABAAAAAAAEAAMAAAABAAAAAAADAAMAAAABAAAAAAACAAMAAAABAAAAAAD4/wMAAAABAAAAAAD4/wQAAAAAAAAAAAD4/wUAAAAAAAAAAAD3/wUAAAAAAAAAAAD6/wIAAAAAAAIAAAD6/wEAAAAAAAEAAAAHAAIAAAAAAAIAAAAHAAEAAAAAAAEAAAAKAAIAAAABAAIAAAAIAAIAAAABAAIAAAA=")
+tile_set = SubResource("TileSet_dj7mr")
+
+[node name="Player1Spawn" type="Node2D" parent="."]
+position = Vector2(341, 321)
+
+[node name="Player2Spawn" type="Node2D" parent="."]
+position = Vector2(486, 321)
+
+[node name="Players" type="Node2D" parent="."]
+script = ExtResource("2_1skc0")
+player1_path = NodePath("Player1")
+player2_path = NodePath("Player2")
+
+[node name="Player2" parent="Players" instance=ExtResource("3_hqyio")]
+position = Vector2(483, 345)
+scale = Vector2(4, 4)
+script = ExtResource("4_0ooy3")
+
+[node name="Player1" parent="Players" instance=ExtResource("3_hqyio")]
+position = Vector2(319, 345)
+scale = Vector2(4, 4)
+
+[node name="Line2D" type="Line2D" parent="Players"]
+
+[node name="Transporter" type="Node2D" parent="."]
+position = Vector2(1007, 429)
+
+[node name="Area2D" type="Area2D" parent="Transporter"]
+scale = Vector2(4, 4)
+script = ExtResource("5_wybje")
+
+[node name="Sprite2D" type="Sprite2D" parent="Transporter/Area2D"]
+texture_filter = 1
+position = Vector2(1.75, -7)
+texture = ExtResource("6_fntk7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transporter/Area2D"]
+position = Vector2(1.5, -10.75)
+shape = SubResource("CapsuleShape2D_vl430")
+
+[node name="dog" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(408, 401)
+scale = Vector2(4, 4)
+texture = ExtResource("7_t4vhr")
+script = ExtResource("8_cw8sl")
+
+[node name="dog4" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(96, 286)
+scale = Vector2(4, 4)
+texture = ExtResource("7_t4vhr")
+
+[node name="dog2" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(701, 401)
+scale = Vector2(4, 4)
+texture = ExtResource("7_t4vhr")
+flip_h = true
+script = ExtResource("8_cw8sl")
+
+[node name="dog3" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(580, 401)
+scale = Vector2(4, 4)
+texture = ExtResource("7_t4vhr")
+flip_h = true
+script = ExtResource("8_cw8sl")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(595, 255)

@@ -1,0 +1,93 @@
+[gd_scene load_steps=10 format=4 uid="uid://df7a4dlam4cx4"]
+
+[ext_resource type="Texture2D" uid="uid://5wppe5dwmvix" path="res://Sprite-0005.png" id="5_8wcyt"]
+[ext_resource type="Texture2D" uid="uid://c8aka5g6jsoqv" path="res://bigDog.png" id="5_584l8"]
+[ext_resource type="Script" path="res://rope_connection.gd" id="6_qklbh"]
+[ext_resource type="Script" path="res://auto_move.gd" id="6_ri8tx"]
+[ext_resource type="PackedScene" uid="uid://dmug1epffv0c2" path="res://player.tscn" id="7_1f702"]
+[ext_resource type="Script" path="res://player2.gd" id="8_4tix5"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1ao5t"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8p1fm"]
+texture = ExtResource("5_8wcyt")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, 4.8125, -0.75, 5.3125, -1.125, 1, -0.125, 0.1875, 8, -0.0625)
+3:0/0 = 0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 4.75, 4.125, 5.0625, 4.125, 0, -8, 0.125)
+0:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_dj7mr"]
+physics_layer_0/collision_layer = 1
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_1ao5t")
+sources/0 = SubResource("TileSetAtlasSource_8p1fm")
+
+[node name="Level 2" type="Node2D"]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+texture_filter = 1
+position = Vector2(467, 241)
+scale = Vector2(4, 4)
+tile_map_data = PackedByteArray("AAD//wQAAAAAAAAAAAD+/wQAAAAAAAAAAAABAAMAAAABAAAAAAAAAAMAAAABAAAAAAD9/wQAAAAAAAAAAAABAAQAAAAAAAAAAAAAAAQAAAAAAAAAAAD9/wUAAAAAAAAAAAD+/wUAAAAAAAAAAAD//wUAAAAAAAAAAAAAAAUAAAAAAAAAAAABAAUAAAAAAAAAAAACAAUAAAAAAAAAAAADAAUAAAAAAAAAAAADAAQAAAAAAAAAAAACAAQAAAAAAAAAAAD8/wUAAAAAAAAAAAD7/wUAAAAAAAAAAAD7/wQAAAAAAAAAAAD8/wQAAAAAAAAAAAD6/wUAAAAAAAAAAAD5/wUAAAAAAAAAAAD4/wYAAAAAAAAAAAD5/wYAAAAAAAAAAAD6/wYAAAAAAAAAAAD7/wYAAAAAAAAAAAD8/wYAAAAAAAAAAAD9/wYAAAAAAAAAAAD+/wYAAAAAAAAAAAD//wYAAAAAAAAAAAAAAAYAAAAAAAAAAAABAAYAAAAAAAAAAAACAAYAAAAAAAAAAAADAAYAAAAAAAAAAAAEAAYAAAAAAAAAAAAFAAYAAAAAAAAAAAAGAAYAAAAAAAAAAAAGAAUAAAAAAAAAAAAHAAUAAAAAAAAAAAAIAAUAAAAAAAAAAAAJAAUAAAAAAAAAAAAKAAUAAAAAAAAAAAAKAAYAAAAAAAAAAAAJAAYAAAAAAAAAAAAIAAYAAAAAAAAAAAAHAAYAAAAAAAAAAAD6/wQAAAAAAAAAAAD5/wQAAAAAAAAAAAD5/wMAAAABAAAAAAD7/wMAAAABAAAAAAD8/wMAAAABAAAAAAD9/wMAAAABAAAAAAD+/wMAAAABAAAAAAD//wMAAAABAAAAAAD6/wMAAAABAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAAAAAAAAAAFAAUAAAAAAAAAAAAFAAQAAAAAAAAAAAAGAAQAAAAAAAAAAAAHAAQAAAAAAAAAAAAIAAQAAAAAAAAAAAAJAAQAAAAAAAAAAAAKAAQAAAAAAAAAAAAKAAMAAAABAAAAAAAJAAMAAAABAAAAAAAIAAMAAAABAAAAAAAHAAMAAAABAAAAAAAGAAMAAAABAAAAAAAFAAMAAAABAAAAAAAEAAMAAAABAAAAAAADAAMAAAABAAAAAAACAAMAAAABAAAAAAD4/wMAAAABAAAAAAD4/wQAAAAAAAAAAAD4/wUAAAAAAAAAAAD3/wUAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_dj7mr")
+
+[node name="Player1Spawn" type="Node2D" parent="."]
+position = Vector2(341, 321)
+
+[node name="Player2Spawn" type="Node2D" parent="."]
+position = Vector2(486, 321)
+
+[node name="Players" type="Node2D" parent="."]
+script = ExtResource("6_qklbh")
+player1_path = NodePath("Player1")
+player2_path = NodePath("Player2")
+
+[node name="Player2" parent="Players" instance=ExtResource("7_1f702")]
+position = Vector2(483, 345)
+scale = Vector2(4, 4)
+script = ExtResource("8_4tix5")
+
+[node name="Player1" parent="Players" instance=ExtResource("7_1f702")]
+position = Vector2(319, 345)
+scale = Vector2(4, 4)
+
+[node name="Line2D" type="Line2D" parent="Players"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(240, 402)
+scale = Vector2(2, 2)
+texture = ExtResource("5_584l8")
+script = ExtResource("6_ri8tx")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(492, 401)
+scale = Vector2(2, 2)
+texture = ExtResource("5_584l8")
+script = ExtResource("6_ri8tx")
+
+[node name="Sprite2D4" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(348, 401)
+scale = Vector2(2, 2)
+texture = ExtResource("5_584l8")
+flip_h = true
+script = ExtResource("6_ri8tx")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(671, 401)
+scale = Vector2(2, 2)
+texture = ExtResource("5_584l8")
+flip_h = true
+script = ExtResource("6_ri8tx")

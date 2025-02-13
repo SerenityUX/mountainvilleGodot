@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://v5e1hb3cuawg"]
+
+[ext_resource type="Script" path="res://death.gd" id="1_506w6"]
+[ext_resource type="Texture2D" uid="uid://c3t4fgrqh85m2" path="res://R.png" id="2_n75ka"]
+[ext_resource type="Texture2D" uid="uid://db4a3o0ppi0n7" path="res://sage.png" id="3_rsinf"]
+[ext_resource type="Script" path="res://screen_switcher.gd" id="5_dp8xp"]
+
+[node name="death" type="Node2D"]
+script = ExtResource("1_506w6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(163, 123)
+scale = Vector2(4, 4)
+texture = ExtResource("2_n75ka")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(640, 360)
+
+[node name="Sprite2D4" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(950, 304)
+scale = Vector2(20, 20)
+texture = ExtResource("3_rsinf")
+
+[node name="Screens" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(429, 487)
+scale = Vector2(2.63777, 2.60417)
+script = ExtResource("5_dp8xp")
