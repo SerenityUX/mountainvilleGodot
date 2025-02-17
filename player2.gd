@@ -7,6 +7,9 @@ const FALL_GRAVITY_MULTIPLIER = 1.5  # Faster falling
 const GRAVITY = Vector2(0, 980)
 const MOMENTUM_DECAY = 0.95  # How quickly momentum decays
 const MAX_JUMPS = 2  # Maximum number of jumps allowed
+const PLAYER2_TEXTURE_PATH := "res://TompoSprite.png"  # Update texture path
+const FRAME_WIDTH := 16  # Width of each frame
+const ANIMATION_SPEED := 10.0  # Frames per second
 
 # Add sprite reference
 @onready var sprite = $player  # Make sure you have a Sprite2D node as a child named "Sprite2D"
@@ -30,26 +33,18 @@ var grab_sound: AudioStreamPlayer
 var death_sound: AudioStreamPlayer
 var jump_sound: AudioStreamPlayer
 var launch_sound: AudioStreamPlayer
-
-# Near the top with other constants
-const PLAYER2_TEXTURE_PATH := "res://Player2.png"
-
-# Add these constants for the trail effect
-const TRAIL_LIFETIME := 0.5  # How long each trail particle lasts
-const TRAIL_FREQUENCY := 0.05  # How often to emit trail particles
-const TRAIL_AMOUNT := 3  # How many particles to emit each time
-
-# Add these variables with other vars
-var trail_particles: GPUParticles2D
-var trail_timer: Timer
-var is_trailing := false
+var animation_timer: float = 0.0
+var current_frame: int = 0
 
 func _ready() -> void:
-	# Add this before other _ready code
-	# Load and set Player2 texture
+	# Load and set Player2 texture with correct pixel art settings
 	var texture = load(PLAYER2_TEXTURE_PATH)
 	if texture:
 		sprite.texture = texture
+		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		# Set up sprite for animation
+		sprite.hframes = 4  # 4 frames horizontally
+		sprite.frame = 0  # Start with first frame
 	else:
 		push_error("Failed to load Player2 texture")
 	
@@ -57,7 +52,7 @@ func _ready() -> void:
 	carry_position = Node2D.new()
 	carry_position.name = "CarryPosition"
 	add_child(carry_position)
-	carry_position.position = Vector2(0, -19)
+	carry_position.position = Vector2(0, -13)  # Adjusted for 16x16 sprite
 	
 	# Store original collision size
 	original_size = collision_shape.shape.size  # Changed from height
@@ -109,16 +104,6 @@ func _ready() -> void:
 	if launch_audio:
 		launch_sound.stream = launch_audio
 		launch_sound.volume_db = linear_to_db(0.3)
-
-	# Setup trail particles
-	setup_trail_particles()
-	
-	# Setup trail timer
-	trail_timer = Timer.new()
-	trail_timer.wait_time = TRAIL_FREQUENCY
-	trail_timer.one_shot = false
-	trail_timer.timeout.connect(_on_trail_timer_timeout)
-	add_child(trail_timer)
 
 func _physics_process(delta: float) -> void:
 	if !is_active:
@@ -191,10 +176,23 @@ func _physics_process(delta: float) -> void:
 	if direction:
 		velocity.x = direction * SPEED
 		momentum = abs(velocity.x)
-		sprite.scale.x = 1 if direction < 0 else -1
+		sprite.flip_h = direction > 0
+		
+		# Update animation
+		is_walking = true
+		animation_timer += delta * ANIMATION_SPEED
+		if animation_timer >= 1.0:
+			animation_timer = 0.0
+			current_frame = (current_frame + 1) % 4
+			sprite.frame = current_frame
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED * delta * 10)
 		momentum *= MOMENTUM_DECAY
+		# Reset to idle frame when not walking
+		is_walking = false
+		current_frame = 0
+		sprite.frame = 0
+		animation_timer = 0.0
 
 	# Handle walking sound
 	if direction and is_on_floor():
@@ -260,8 +258,6 @@ func stop_being_carried() -> void:
 		# Re-enable collision
 		set_collision_layer_value(1, true)
 		set_collision_mask_value(1, true)
-		# Start trail effect when launching
-		start_trail_effect()
 		# Then tell the carrier to stop
 		temp_carrier.stop_carrying()
 
@@ -277,54 +273,3 @@ func stop_carrying() -> void:
 
 func is_involved_in_carrying() -> bool:
 	return is_being_carried or carrying_player != null
-
-func setup_trail_particles() -> void:
-	trail_particles = GPUParticles2D.new()
-	add_child(trail_particles)
-	
-	# Create particle material
-	var particle_material = ParticleProcessMaterial.new()
-	particle_material.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_POINT
-	particle_material.particle_flag_disable_z = true
-	particle_material.gravity = Vector3(0, 0, 0)
-	particle_material.initial_velocity_min = 0
-	particle_material.initial_velocity_max = 0
-	particle_material.orbit_velocity_min = 0
-	particle_material.orbit_velocity_max = 0
-	particle_material.damping_min = 0.5
-	particle_material.damping_max = 1.0
-	particle_material.scale_min = 1.0
-	particle_material.scale_max = 1.0
-	particle_material.lifetime_randomness = 0.2
-	
-	# Set up the particles
-	trail_particles.process_material = particle_material
-	trail_particles.amount = 50
-	trail_particles.lifetime = TRAIL_LIFETIME
-	trail_particles.one_shot = false
-	trail_particles.explosiveness = 0
-	trail_particles.local_coords = false
-	
-	# Create sprite for particles
-	var sprite = sprite.duplicate()  # Duplicate the player sprite
-	sprite.scale = Vector2(1, 1)  # Reset scale
-	trail_particles.texture = sprite.texture
-	trail_particles.emitting = false
-
-func start_trail_effect() -> void:
-	is_trailing = true
-	trail_particles.emitting = true
-	trail_timer.start()
-
-func stop_trail_effect() -> void:
-	is_trailing = false
-	trail_particles.emitting = false
-	trail_timer.stop()
-
-func _on_trail_timer_timeout() -> void:
-	if is_trailing:
-		trail_particles.restart()
-		trail_particles.emit_particle(transform, velocity, Color.WHITE, Color.WHITE, TRAIL_AMOUNT)
-		# Stop trailing if velocity is too low
-		if velocity.length() < 200:
-			stop_trail_effect()

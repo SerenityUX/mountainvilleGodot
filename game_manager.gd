@@ -5,6 +5,15 @@ var players_finished := 0
 var pending_player_state := {}  # Store state between scene changes
 var timer: Timer
 var timer_label: Label
+
+# Add inventory system
+var inventory: Array[String] = []
+const REQUIRED_ITEMS := 3  # Number of items needed for transport
+
+# Signal for inventory updates
+signal inventory_updated(current_count: int, required_count: int)
+signal transport_ready
+
 const LEVEL1_TIME := 90  # 2 minutes in seconds
 const VIEWPORT_WIDTH := 1056  # Base viewport width
 const VIEWPORT_HEIGHT := 594  # Base viewport height (16:9 aspect ratio)
@@ -440,3 +449,19 @@ func load_screen_sequence() -> void:
 		
 	print("Successfully loaded screen sequence")
 	get_tree().root.add_child(screen_scene)
+
+func add_to_inventory(item_name: String) -> void:
+	inventory.append(item_name)
+	print("Added ", item_name, " to inventory. Current inventory: ", inventory)
+	
+	# Emit signal with current counts
+	inventory_updated.emit(inventory.size(), REQUIRED_ITEMS)
+	
+	# Check if we have enough items
+	if inventory.size() >= REQUIRED_ITEMS:
+		print("Transport ready! Collected all required items!")
+		transport_ready.emit()
+
+func clear_inventory() -> void:
+	inventory.clear()
+	inventory_updated.emit(0, REQUIRED_ITEMS)

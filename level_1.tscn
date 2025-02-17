@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://df7a4dlam4cx4"]
+[gd_scene load_steps=20 format=4 uid="uid://df7a4dlam4cx4"]
 
 [ext_resource type="Script" path="res://door_area.gd" id="1_j1fkx"]
 [ext_resource type="Texture2D" uid="uid://bmoojqtdqu7k7" path="res://door.png" id="2_joogw"]
@@ -9,6 +9,10 @@
 [ext_resource type="PackedScene" uid="uid://dmug1epffv0c2" path="res://player.tscn" id="7_1f702"]
 [ext_resource type="Script" path="res://player2.gd" id="8_4tix5"]
 [ext_resource type="Script" path="res://camera_controller.gd" id="9_d843t"]
+[ext_resource type="Texture2D" uid="uid://b0xprj8oaswlm" path="res://apple.png" id="10_fm75x"]
+[ext_resource type="Script" path="res://resource.gd" id="10_gmbel"]
+[ext_resource type="Texture2D" uid="uid://qbkca31h1nwv" path="res://orange.png" id="12_vr2ym"]
+[ext_resource type="Texture2D" uid="uid://dkfypw3501pb8" path="res://lemon.png" id="13_ooys1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p52gs"]
 size = Vector2(10.75, 12)
@@ -48,6 +52,7 @@ outline_color = Color(0, 0, 0, 1)
 [node name="Level 1" type="Node2D"]
 
 [node name="Door" type="Area2D" parent="."]
+visible = false
 position = Vector2(-3323, 400)
 scale = Vector2(4, 4)
 script = ExtResource("1_j1fkx")
@@ -464,3 +469,50 @@ offset_bottom = -184.0
 label_settings = SubResource("LabelSettings_0p4w5")
 
 [node name="GameTimer" type="Timer" parent="Camera2D"]
+
+[node name="Apple" type="Area2D" parent="."]
+position = Vector2(163, 593)
+scale = Vector2(4, 4)
+script = ExtResource("10_gmbel")
+
+[node name="Sprite2D" type="Sprite2D" parent="Apple"]
+texture_filter = 1
+position = Vector2(-175.5, -75)
+scale = Vector2(0.488653, 0.488653)
+texture = ExtResource("10_fm75x")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Apple"]
+position = Vector2(-176.375, -78)
+shape = SubResource("RectangleShape2D_p52gs")
+
+[node name="Orange" type="Area2D" parent="."]
+position = Vector2(-3261, 401)
+scale = Vector2(4, 4)
+script = ExtResource("10_gmbel")
+resource_name = "orange"
+
+[node name="Sprite2D" type="Sprite2D" parent="Orange"]
+texture_filter = 1
+position = Vector2(-175.5, -75)
+scale = Vector2(0.488653, 0.488653)
+texture = ExtResource("12_vr2ym")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Orange"]
+position = Vector2(-176.375, -78)
+shape = SubResource("RectangleShape2D_p52gs")
+
+[node name="Lemon" type="Area2D" parent="."]
+position = Vector2(1207, 401)
+scale = Vector2(4, 4)
+script = ExtResource("10_gmbel")
+resource_name = "lemon"
+
+[node name="Sprite2D" type="Sprite2D" parent="Lemon"]
+texture_filter = 1
+position = Vector2(-175.5, -75)
+scale = Vector2(0.488653, 0.488653)
+texture = ExtResource("13_ooys1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lemon"]
+position = Vector2(-176.375, -78)
+shape = SubResource("RectangleShape2D_p52gs")

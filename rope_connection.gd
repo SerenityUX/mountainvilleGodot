@@ -58,6 +58,9 @@ func _ready() -> void:
 	rope_visual.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
 	rope_visual.default_color = Color.WHITE
 	
+	# Set z_index to be behind players
+	rope_visual.z_index = -1
+	
 	current_max_length = max_length  # Initialize current length
 	add_to_group("rope")
 	
