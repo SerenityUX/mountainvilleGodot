@@ -1,3 +1,18 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# Executables
+*.dmg
+*.exe
+*.x86_64
+*.x86
+*.app
+*.AppImage
+*.flatpak
+
+# Linux
+*.so
+*.so.*
+*.a
+*.o

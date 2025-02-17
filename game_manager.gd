@@ -193,9 +193,13 @@ func load_level(level: int) -> void:
 			background_music.stop()
 	
 	# Load the appropriate level scene as a child of root
-	var scene_name = "level_" + str(level)
-	if level == -1:  # Special case for death scene
+	var scene_name = ""
+	if level == 0:
+		scene_name = "curry_house_outside"
+	elif level == -1:  # Special case for death scene
 		scene_name = "death"
+	else:
+		scene_name = "level_" + str(level)
 	
 	# Update sky colors before loading the new scene
 	update_sky_colors("Level " + str(level) if level >= 0 else "death")
@@ -437,7 +441,7 @@ func load_screen_sequence() -> void:
 	var scene = load("res://screen_sequence.tscn")
 	if scene == null:
 		push_error("Failed to load screen_sequence.tscn! Make sure the file exists in the res:// directory")
-		# Fallback to loading level 0
+		# Fallback to loading curry_house_outside
 		load_level(0)
 		return
 		
@@ -465,3 +469,46 @@ func add_to_inventory(item_name: String) -> void:
 func clear_inventory() -> void:
 	inventory.clear()
 	inventory_updated.emit(0, REQUIRED_ITEMS)
+
+func change_to_dialogue(dialogue_scene: String) -> void:
+	# Prevent multiple simultaneous level changes
+	if is_changing_level:
+		return
+	is_changing_level = true
+	
+	# Stop any playing music
+	if background_music and background_music.playing:
+		background_music.stop()
+	if countdown_music and countdown_music.playing:
+		countdown_music.stop()
+	
+	# Remove all existing players
+	var players = get_tree().get_nodes_in_group("players")
+	for player in players:
+		if is_instance_valid(player):
+			player.queue_free()
+	
+	# Remove current level
+	for node in get_tree().root.get_children():
+		if node != self and not node.name.begins_with("Auto"):
+			if is_instance_valid(node):
+				node.queue_free()
+	
+	# Wait a frame to ensure cleanup
+	await get_tree().process_frame
+	
+	# Load dialogue scene
+	var scene_path = "res://" + dialogue_scene + ".tscn"
+	print("Loading dialogue scene from: ", scene_path)  # Debug print
+	var scene = load(scene_path)
+	if scene:
+		var dialogue_instance = scene.instantiate()
+		get_tree().root.add_child(dialogue_instance)
+		print("Successfully loaded dialogue scene")  # Debug print
+		
+		# Update sky colors for dialogue
+		update_sky_colors("Level 0")  # Use level 0 colors for dialogue
+	else:
+		print("Failed to load dialogue scene!")  # Debug print
+	
+	is_changing_level = false

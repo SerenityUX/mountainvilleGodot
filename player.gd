@@ -38,6 +38,9 @@ var launch_sound: AudioStreamPlayer
 var animation_timer: float = 0.0
 var current_frame: int = 0
 
+# Add this signal at the top of the file with other constants
+signal physics_process(player: CharacterBody2D)
+
 func _ready() -> void:
 	# Load and set Player1 texture with correct pixel art settings
 	var texture = load(PLAYER1_TEXTURE_PATH)
@@ -134,6 +137,9 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if !is_active:
 		return
+		
+	# Add this line at the start of the function
+	physics_process.emit(self)
 
 	if is_being_carried:
 		# Only check for breaking free - don't do any physics

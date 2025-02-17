@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://h3g8lt0elg05"]
+
+[ext_resource type="Texture2D" uid="uid://bcwdmc241wgdo" path="res://Cat.png" id="1_25x5c"]
+[ext_resource type="Texture2D" uid="uid://b45p50iy0sdo" path="res://Gyoza.png" id="2_nvbxj"]
+[ext_resource type="FontFile" uid="uid://bv57w636b6w38" path="res://ZetaReticuli-4OWp.otf" id="3_225os"]
+[ext_resource type="Script" path="res://CatDialogueControl.gd" id="4_kbjde"]
+
+[node name="CatDialogue" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(640, 360)
+
+[node name="Cat" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(959, 455)
+scale = Vector2(45, 45)
+texture = ExtResource("1_25x5c")
+
+[node name="BottomText" type="RichTextLabel" parent="."]
+texture_filter = 1
+offset_left = 160.8
+offset_top = 562.5
+offset_right = 600.8
+offset_bottom = 611.5
+scale = Vector2(1.00116, 1)
+theme_override_fonts/normal_font = ExtResource("3_225os")
+theme_override_font_sizes/normal_font_size = 24
+fit_content = true
+autowrap_mode = 2
+
+[node name="CatDialogue" type="Node" parent="."]
+script = ExtResource("4_kbjde")
+
+[node name="colon" type="Label" parent="."]
+texture_filter = 1
+offset_left = 212.8
+offset_top = 518.5
+offset_right = 252.8
+offset_bottom = 541.5
+text = ":"
+metadata/_edit_group_ = true
+
+[node name="TopText" type="Node" parent="."]
+
+[node name="Gyoza" type="Sprite2D" parent="TopText"]
+position = Vector2(170.8, 528.5)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_nvbxj")
+metadata/_edit_group_ = true
