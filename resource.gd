@@ -3,16 +3,17 @@ extends Area2D
 # Add reference to Root instead of GameManager
 @onready var game_manager = get_tree().root.get_node("Root")
 
-# Define allowed fruit types
-const VALID_FRUITS = ["apple", "lemon", "orange"]
-@export var resource_name: String = "apple":
+# Updated to include both level 1 and level 2 ingredients
+const VALID_INGREDIENTS = ["corn", "tomato", "onion", "peppers", "garlic", "water", "oil", "flour"]
+@export var resource_name: String = "corn":
 	set(value):
-		# Validate the fruit name
-		if value in VALID_FRUITS:
-			resource_name = value
+		# Validate the ingredient name (case-insensitive)
+		var lowercase_value = value.to_lower()
+		if lowercase_value in VALID_INGREDIENTS:
+			resource_name = lowercase_value  # Store as lowercase
 		else:
-			push_warning("Invalid fruit name: %s. Must be one of: %s" % [value, VALID_FRUITS])
-			resource_name = "apple"  # Default to apple if invalid
+			push_warning("Invalid ingredient name: %s. Must be one of: %s" % [value, VALID_INGREDIENTS])
+			resource_name = "corn"  # Default to corn if invalid
 
 var eat_sound: AudioStreamPlayer
 var is_collected := false  # Track if resource has been collected
@@ -68,8 +69,15 @@ func _on_body_entered(body: Node2D) -> void:
 			if game_manager:
 				game_manager.add_to_inventory(resource_name)
 				
-				# Only transport if we have enough items
-				if game_manager.inventory.size() >= game_manager.REQUIRED_ITEMS:
+				# Check if all ingredient types have been collected
+				var has_all_ingredients = true
+				for ingredient in VALID_INGREDIENTS:
+					if not game_manager.inventory.has(ingredient):
+						has_all_ingredients = false
+						break
+				
+				# Only transport if we have all ingredient types
+				if has_all_ingredients:
 					# Get all players and transport them
 					var players = get_tree().get_nodes_in_group("players")
 					for player in players:

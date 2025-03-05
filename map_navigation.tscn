@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://bdbtu143vbf1x"]
+
+[ext_resource type="Texture2D" uid="uid://d1hfmjlr7asq6" path="res://map.png" id="1_qkncd"]
+[ext_resource type="Script" path="res://first_level_transport.gd" id="2_pglwi"]
+[ext_resource type="Texture2D" uid="uid://3fukic0qpyl3" path="res://circleClick.png" id="3_815b1"]
+[ext_resource type="Script" path="res://second_level_transport.gd" id="4_3luat"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Map" type="Sprite2D" parent="."]
+position = Vector2(549, 331)
+scale = Vector2(1.93671, 1.93671)
+texture = ExtResource("1_qkncd")
+
+[node name="Button" type="Button" parent="."]
+offset_left = 307.0
+offset_top = 112.0
+offset_right = 432.0
+offset_bottom = 242.0
+script = ExtResource("2_pglwi")
+
+[node name="CircleClick" type="Sprite2D" parent="Button"]
+position = Vector2(66, 67)
+texture = ExtResource("3_815b1")
+
+[node name="Button2" type="Button" parent="."]
+offset_left = 393.0
+offset_top = 301.0
+offset_right = 518.0
+offset_bottom = 431.0
+script = ExtResource("4_3luat")
+
+[node name="CircleClick" type="Sprite2D" parent="Button2"]
+position = Vector2(66, 67)
+texture = ExtResource("3_815b1")

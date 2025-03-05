@@ -1,9 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://h3g8lt0elg05"]
+[gd_scene load_steps=11 format=3 uid="uid://h3g8lt0elg05"]
 
 [ext_resource type="Texture2D" uid="uid://bcwdmc241wgdo" path="res://Cat.png" id="1_25x5c"]
 [ext_resource type="Texture2D" uid="uid://b45p50iy0sdo" path="res://Gyoza.png" id="2_nvbxj"]
 [ext_resource type="FontFile" uid="uid://bv57w636b6w38" path="res://ZetaReticuli-4OWp.otf" id="3_225os"]
 [ext_resource type="Script" path="res://CatDialogueControl.gd" id="4_kbjde"]
+[ext_resource type="Texture2D" uid="uid://dbp6xj5plnk3k" path="res://Rope.png" id="5_qowjo"]
+[ext_resource type="Texture2D" uid="uid://bbckhdbeu7ib6" path="res://Tompo16px.png" id="6_2figu"]
+[ext_resource type="Texture2D" uid="uid://bf44hb6l26f1a" path="res://Velo16px.png" id="7_58gmo"]
+[ext_resource type="Texture2D" uid="uid://58kbwpjurbld" path="res://Arrow.png" id="8_rxpk7"]
+[ext_resource type="Texture2D" uid="uid://r5qienqnx62r" path="res://House.png" id="9_b7hpi"]
+[ext_resource type="Texture2D" uid="uid://thpooslkpw8g" path="res://Scroll.webp" id="10_gf6di"]
 
 [node name="CatDialogue" type="Node2D"]
 
@@ -16,7 +22,12 @@ position = Vector2(959, 455)
 scale = Vector2(45, 45)
 texture = ExtResource("1_25x5c")
 
-[node name="BottomText" type="RichTextLabel" parent="."]
+[node name="CatDialogue" type="Node" parent="."]
+script = ExtResource("4_kbjde")
+
+[node name="FirstMessage" type="Node" parent="."]
+
+[node name="BottomText" type="RichTextLabel" parent="FirstMessage"]
 texture_filter = 1
 offset_left = 160.8
 offset_top = 562.5
@@ -27,11 +38,9 @@ theme_override_fonts/normal_font = ExtResource("3_225os")
 theme_override_font_sizes/normal_font_size = 24
 fit_content = true
 autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
 
-[node name="CatDialogue" type="Node" parent="."]
-script = ExtResource("4_kbjde")
-
-[node name="colon" type="Label" parent="."]
+[node name="colon" type="Label" parent="FirstMessage"]
 texture_filter = 1
 offset_left = 212.8
 offset_top = 518.5
@@ -39,11 +48,182 @@ offset_right = 252.8
 offset_bottom = 541.5
 text = ":"
 metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
 
-[node name="TopText" type="Node" parent="."]
+[node name="TopText" type="Node" parent="FirstMessage"]
 
-[node name="Gyoza" type="Sprite2D" parent="TopText"]
+[node name="Gyoza" type="Sprite2D" parent="FirstMessage/TopText"]
 position = Vector2(170.8, 528.5)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_nvbxj")
 metadata/_edit_group_ = true
+
+[node name="SecondMessage" type="Node" parent="."]
+
+[node name="Node" type="Node" parent="SecondMessage"]
+
+[node name="Gyoza" type="Sprite2D" parent="SecondMessage/Node"]
+position = Vector2(170.8, 293.5)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_nvbxj")
+metadata/_edit_group_ = true
+
+[node name="colon" type="Label" parent="SecondMessage/Node"]
+texture_filter = 1
+offset_left = 212.8
+offset_top = 283.5
+offset_right = 252.8
+offset_bottom = 306.5
+text = ":
+"
+metadata/_edit_group_ = true
+
+[node name="Players" type="Node" parent="SecondMessage"]
+
+[node name="Tompo" type="Sprite2D" parent="SecondMessage/Players"]
+z_index = 1
+texture_filter = 1
+position = Vector2(167, 393)
+scale = Vector2(6, 6)
+texture = ExtResource("6_2figu")
+flip_h = true
+
+[node name="Velo16Px" type="Sprite2D" parent="SecondMessage/Players"]
+z_index = 1
+texture_filter = 1
+position = Vector2(428, 393)
+scale = Vector2(6, 6)
+texture = ExtResource("7_58gmo")
+
+[node name="Ropes" type="Node" parent="SecondMessage"]
+
+[node name="Rope2" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(206, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Rope3" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(222, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Rope4" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(238, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Rope5" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(254, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Rope6" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(270, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Rope7" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(286, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Rope8" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(301, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Rope9" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(317, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Rope10" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(333, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Rope11" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(349, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Rope12" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(365, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Rope13" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(381, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Rope14" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(389, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Rope15" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(397, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Rope16" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(405, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Rope17" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(421, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Rope" type="Sprite2D" parent="SecondMessage/Ropes"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(190, 394)
+texture = ExtResource("5_qowjo")
+
+[node name="Text" type="RichTextLabel" parent="SecondMessage"]
+texture_filter = 1
+offset_left = 162.0
+offset_top = 370.0
+offset_right = 602.0
+offset_bottom = 419.0
+scale = Vector2(1.00116, 1)
+theme_override_fonts/normal_font = ExtResource("3_225os")
+theme_override_font_sizes/normal_font_size = 24
+text = "great, let's do it"
+fit_content = true
+autowrap_mode = 2
+
+[node name="Arrow" type="Sprite2D" parent="SecondMessage"]
+position = Vector2(321, 465)
+rotation = 1.58206
+scale = Vector2(0.276685, -0.217463)
+texture = ExtResource("8_rxpk7")
+
+[node name="House" type="Sprite2D" parent="SecondMessage"]
+position = Vector2(222, 570)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("9_b7hpi")
+
+[node name="Scroll" type="Sprite2D" parent="SecondMessage"]
+position = Vector2(394, 575)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("10_gf6di")

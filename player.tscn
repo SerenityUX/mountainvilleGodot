@@ -12,7 +12,6 @@ script = ExtResource("1_x8gva")
 [node name="player" type="Sprite2D" parent="."]
 texture_filter = 1
 position = Vector2(-1.78814e-07, 6.85453e-07)
-scale = Vector2(1, 1)
 texture = ExtResource("2_jxcos")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
