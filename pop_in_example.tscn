@@ -1,0 +1,102 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://PopInEffectExample.gd" id="1_vbm3n"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_uhh23"]
+[ext_resource type="Script" path="res://PopInEffect.gd" id="3_2qcna"]
+
+[node name="PopInExample" type="Node2D"]
+script = ExtResource("1_vbm3n")
+
+[node name="Sprites" type="Node2D" parent="."]
+
+[node name="Sprite1" type="Sprite2D" parent="Sprites"]
+position = Vector2(200, 150)
+texture = ExtResource("2_uhh23")
+
+[node name="PopInEffect" type="Node" parent="Sprites/Sprite1"]
+script = ExtResource("3_2qcna")
+trans_type = 1
+auto_start = false
+
+[node name="Sprite2" type="Sprite2D" parent="Sprites"]
+position = Vector2(350, 150)
+texture = ExtResource("2_uhh23")
+
+[node name="PopInEffect" type="Node" parent="Sprites/Sprite2"]
+script = ExtResource("3_2qcna")
+trans_type = 2
+auto_start = false
+
+[node name="Sprite3" type="Sprite2D" parent="Sprites"]
+position = Vector2(500, 150)
+texture = ExtResource("2_uhh23")
+
+[node name="PopInEffect" type="Node" parent="Sprites/Sprite3"]
+script = ExtResource("3_2qcna")
+trans_type = 3
+auto_start = false
+
+[node name="Sprite4" type="Sprite2D" parent="Sprites"]
+position = Vector2(650, 150)
+texture = ExtResource("2_uhh23")
+
+[node name="PopInEffect" type="Node" parent="Sprites/Sprite4"]
+script = ExtResource("3_2qcna")
+trans_type = 4
+auto_start = false
+
+[node name="Sprite5" type="Sprite2D" parent="Sprites"]
+position = Vector2(800, 150)
+texture = ExtResource("2_uhh23")
+
+[node name="PopInEffect" type="Node" parent="Sprites/Sprite5"]
+script = ExtResource("3_2qcna")
+trans_type = 5
+auto_start = false
+
+[node name="AnchorDemo" type="Node2D" parent="."]
+position = Vector2(500, 300)
+
+[node name="AnchorPoint" type="Node2D" parent="AnchorDemo"]
+position = Vector2(0, 100)
+
+[node name="Marker" type="Sprite2D" parent="AnchorDemo/AnchorPoint"]
+modulate = Color(1, 0, 0, 1)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_uhh23")
+
+[node name="AnchoredSprite" type="Sprite2D" parent="AnchorDemo"]
+position = Vector2(0, 0)
+texture = ExtResource("2_uhh23")
+
+[node name="PopInEffect" type="Node" parent="AnchorDemo/AnchoredSprite"]
+script = ExtResource("3_2qcna")
+delay = 2.0
+anchor_node = NodePath("../../AnchorPoint")
+auto_start = false
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ReplayButton" type="Button" parent="UI"]
+layout_mode = 0
+offset_left = 447.0
+offset_top = 400.0
+offset_right = 553.0
+offset_bottom = 431.0
+text = "Replay Effects"
+
+[node name="Instructions" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = 251.0
+offset_top = 450.0
+offset_right = 749.0
+offset_bottom = 501.0
+text = "The top row shows different transition types.
+The bottom shows how an anchor point can be used (the red dot)."
+horizontal_alignment = 1
+
+[connection signal="pressed" from="UI/ReplayButton" to="." method="_on_replay_button_pressed"] 

@@ -11,6 +11,11 @@ const PLAYER1_TEXTURE_PATH := "res://VeloSprite.png"
 const FRAME_WIDTH := 16  # Width of each frame
 const ANIMATION_SPEED := 10.0  # Frames per second
 
+# Player configuration options
+@export_category("Player Settings")
+@export_group("Gameplay Options")
+@export var disable_pickup: bool = false  # When checked, this player cannot pick up other players
+
 # Add sprite reference
 @onready var sprite = $player  # Make sure you have a Sprite2D node as a child named "Sprite2D"
 var carry_position: Node2D  # Changed to regular var instead of @onready
@@ -152,7 +157,7 @@ func _physics_process(delta: float) -> void:
 		return  # Skip all other physics while being carried
 
 	# Check for pickup action
-	if Input.is_action_just_pressed("e"):
+	if Input.is_action_just_pressed("e") and !disable_pickup:
 		if !carrying_player:  # If not carrying anyone
 			var players = get_tree().get_nodes_in_group("players")
 			for player in players:
@@ -160,15 +165,22 @@ func _physics_process(delta: float) -> void:
 					var distance = global_position.distance_to(player.global_position)
 					print("Distance to player: ", distance)  # Debug print
 					if distance < 75:  # Increased from 50 to 75
-						carrying_player = player
-						player.being_carried_by(self)
-						# Play grab sound
-						grab_sound.play()
-						# Double the collision height when carrying
-						var current_size = collision_shape.shape.size
-						collision_shape.shape.size = Vector2(current_size.x, current_size.y * 2)
-						# Move collision shape up to account for new height
-						collision_shape.position.y = -current_size.y / 2
+						# Try nudging to find a safe spot for pickup
+						var safe_pos = _find_safe_pickup_position(player)
+						if safe_pos:
+							# Move to safe position before pickup
+							global_position = safe_pos
+							carrying_player = player
+							player.being_carried_by(self)
+							# Play grab sound
+							grab_sound.play()
+							# Double the collision height when carrying
+							var current_size = collision_shape.shape.size
+							collision_shape.shape.size = Vector2(current_size.x, current_size.y * 2)
+							# Move collision shape up to account for new height
+							collision_shape.position.y = -current_size.y / 2
+						else:
+							print("Cannot pickup - could not find safe position")
 						break
 
 	var can_move_up = true
@@ -178,14 +190,13 @@ func _physics_process(delta: float) -> void:
 		carrying_player.global_position = carry_position.global_position
 		carrying_player.velocity = velocity
 		
-		# Do a test move for the carried player
-		if velocity.y < 0:  # If we're moving up
-			# Create a test motion
-			var test_motion = Vector2(0, velocity.y * delta)
-			var collision = carrying_player.move_and_collide(test_motion, true)  # True means test only
-			if collision:
-				can_move_up = false
-				velocity.y = 0
+		# Emergency drop if we're stuck
+		if Input.is_action_just_pressed("w") and Input.is_action_pressed("e"):
+			print("Emergency drop activated!")
+			stop_carrying()
+		
+		# Try to nudge out if we're stuck
+		_try_nudge_when_carrying()
 
 	# Add gravity with higher fall speed
 	if not is_on_floor():
@@ -332,6 +343,149 @@ func transport() -> void:
 	if collision_shape:
 		collision_shape.shape.size = original_size
 		collision_shape.position.y = 0
+		
+	# Reset to initial position when transported to new scene
+	if initial_position != Vector2.ZERO:
+		global_position = initial_position
 
 func is_involved_in_carrying() -> bool:
 	return is_being_carried or carrying_player != null
+
+# Add this new function to check if pickup is safe
+func _can_safely_pickup(player_to_pickup: CharacterBody2D) -> bool:
+	# Save original state
+	var original_size = collision_shape.shape.size
+	var original_offset = collision_shape.position
+	
+	# Temporarily modify collision shape to test the stacked position
+	var test_size = Vector2(original_size.x, original_size.y * 2)
+	collision_shape.shape.size = test_size
+	collision_shape.position.y = -original_size.y / 2
+	
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsShapeQueryParameters2D.new()
+	query.set_shape(collision_shape.shape)
+	query.collision_mask = collision_mask
+	query.exclude = [self, player_to_pickup]
+	
+	# Check current position
+	var transform = Transform2D(0, global_position)
+	query.transform = transform
+	var result = space_state.intersect_shape(query)
+	
+	if result.size() > 0:
+		# Restore original shape and return false if we collide right away
+		collision_shape.shape.size = original_size
+		collision_shape.position = original_offset
+		return false
+	
+	# Check above for ceilings (important for jumps)
+	var ceiling_check = Transform2D(0, global_position + Vector2(0, -20))
+	query.transform = ceiling_check
+	result = space_state.intersect_shape(query)
+	
+	if result.size() > 0:
+		# Restore original shape and return false if ceiling is too low
+		collision_shape.shape.size = original_size
+		collision_shape.position = original_offset
+		return false
+	
+	# Check multiple directions to ensure there's room to move
+	var directions = [
+		Vector2(original_size.x, 0),  # Right
+		Vector2(-original_size.x, 0), # Left
+		Vector2(0, original_size.y),  # Down
+		Vector2(original_size.x, -original_size.y),  # Up-right
+		Vector2(-original_size.x, -original_size.y)  # Up-left
+	]
+	
+	for dir in directions:
+		var pos_check = Transform2D(0, global_position + dir)
+		query.transform = pos_check
+		result = space_state.intersect_shape(query)
+		
+		if result.size() > 0:
+			# If we can't move in important directions, don't pick up
+			collision_shape.shape.size = original_size
+			collision_shape.position = original_offset
+			return false
+	
+	# Restore original collision shape
+	collision_shape.shape.size = original_size
+	collision_shape.position = original_offset
+	
+	# We've checked multiple positions and they're all clear
+	return true
+
+# Add this function to handle nudging when stuck
+func _try_nudge_when_carrying() -> bool:
+	if !carrying_player:
+		return false
+		
+	# First, check if we're actually in a collision state
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsShapeQueryParameters2D.new()
+	query.set_shape(collision_shape.shape)
+	query.collision_mask = collision_mask
+	query.exclude = [self, carrying_player]
+	query.transform = Transform2D(0, global_position)
+	
+	# If no collision detected, no need to nudge
+	if space_state.intersect_shape(query).size() == 0:
+		return false
+		
+	# We're in a collision, try to nudge in several directions
+	print("Detecting collision while carrying, attempting to nudge...")
+	
+	# Try nudging in multiple directions with increasing distance
+	var nudge_directions = [
+		Vector2(16, 0),    # Right
+		Vector2(-16, 0),   # Left
+		Vector2(32, 0),    # Further right
+		Vector2(-32, 0),   # Further left
+		Vector2(0, -16),   # Up
+		Vector2(0, -32)    # Further up
+	]
+	
+	for nudge in nudge_directions:
+		# Test position after nudge
+		query.transform = Transform2D(0, global_position + nudge)
+		if space_state.intersect_shape(query).size() == 0:
+			# Found safe position, move there
+			global_position += nudge
+			print("Successfully nudged to avoid collision")
+			return true
+	
+	# If we get here, we couldn't find a safe spot
+	print("Could not find safe position, dropping player")
+	stop_carrying()
+	return false
+
+# Add this function to find a safe pickup position
+func _find_safe_pickup_position(player_to_pickup: CharacterBody2D) -> Vector2:
+	# Check current position first
+	if _can_safely_pickup(player_to_pickup):
+		return global_position
+	
+	# Try positions nearby
+	var original_pos = global_position
+	var nudge_directions = [
+		Vector2(16, 0),    # Right
+		Vector2(-16, 0),   # Left
+		Vector2(0, -16),   # Up
+		Vector2(16, -16),  # Up-right
+		Vector2(-16, -16), # Up-left
+		Vector2(32, 0),    # Further right
+		Vector2(-32, 0)    # Further left
+	]
+	
+	for nudge in nudge_directions:
+		var test_pos = original_pos + nudge
+		global_position = test_pos
+		if _can_safely_pickup(player_to_pickup):
+			global_position = original_pos  # Reset position
+			return test_pos
+	
+	# No safe position found
+	global_position = original_pos  # Reset position
+	return Vector2.ZERO

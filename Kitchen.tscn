@@ -1,0 +1,95 @@
+[gd_scene load_steps=8 format=3 uid="uid://c02dqgfa2egbx"]
+
+[ext_resource type="PackedScene" uid="uid://cs3d5u1fng8nk" path="res://inventory.tscn" id="1_85pyl"]
+[ext_resource type="Script" path="res://ScaleEven.gd" id="1_svsem"]
+[ext_resource type="Texture2D" uid="uid://sg2lw6n5l3w4" path="res://Pan.png" id="2_16tho"]
+[ext_resource type="Texture2D" uid="uid://cjp2o3ys7unxm" path="res://KitchenBG.png" id="2_c83ys"]
+[ext_resource type="Texture2D" uid="uid://c65vl6qk7fnl1" path="res://Pot.png" id="3_b38v6"]
+[ext_resource type="Script" path="res://escapeToGoBack.gd" id="5_jjvay"]
+[ext_resource type="Texture2D" uid="uid://cx7lslum13w2u" path="res://inventory.png" id="7_rqc6r"]
+
+[node name="Kitchen" type="Node2D"]
+
+[node name="Inventory" parent="." instance=ExtResource("1_85pyl")]
+z_index = 2
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(639, 323)
+scale = Vector2(4, 4)
+texture = ExtResource("2_c83ys")
+
+[node name="Pan" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(640, 323)
+scale = Vector2(4, 4)
+texture = ExtResource("2_16tho")
+
+[node name="Pot" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(624, 332)
+scale = Vector2(4, 4)
+texture = ExtResource("3_b38v6")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(638, 324)
+zoom = Vector2(1.65, 1.65)
+editor_draw_limits = true
+editor_draw_drag_margin = true
+script = ExtResource("1_svsem")
+
+[node name="EscapeController" type="Node" parent="."]
+script = ExtResource("5_jjvay")
+target_scene = "res://CurryHouse.tscn"
+
+[node name="PotSlot1" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(371, 483)
+scale = Vector2(2, 2)
+texture = ExtResource("7_rqc6r")
+
+[node name="PotSlot2" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(409, 483)
+scale = Vector2(2, 2)
+texture = ExtResource("7_rqc6r")
+
+[node name="PotSlot3" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(445, 483)
+scale = Vector2(2, 2)
+texture = ExtResource("7_rqc6r")
+
+[node name="PanSlot1" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(589, 485)
+scale = Vector2(2, 2)
+texture = ExtResource("7_rqc6r")
+
+[node name="PanSlot2" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(627, 485)
+scale = Vector2(2, 2)
+texture = ExtResource("7_rqc6r")
+
+[node name="PanSlot3" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(663, 485)
+scale = Vector2(2, 2)
+texture = ExtResource("7_rqc6r")
+
+[node name="CuttingBoardSlot" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(865, 487)
+scale = Vector2(2, 2)
+texture = ExtResource("7_rqc6r")

@@ -1,0 +1,69 @@
+[gd_scene load_steps=3 format=3 uid="uid://cs3d5u1fng8nk"]
+
+[ext_resource type="Texture2D" uid="uid://cx7lslum13w2u" path="res://inventory.png" id="1_8rom4"]
+[ext_resource type="Texture2D" uid="uid://b1d0hoyk28y21" path="res://MapButton.png" id="2_lyae6"]
+
+[node name="Inventory" type="Node2D"]
+
+[node name="Slot1" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(533, 152)
+scale = Vector2(2, 2)
+texture = ExtResource("1_8rom4")
+
+[node name="Slot9" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(371, 152)
+scale = Vector2(2, 2)
+texture = ExtResource("2_lyae6")
+
+[node name="Slot2" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(567, 152)
+scale = Vector2(2, 2)
+texture = ExtResource("1_8rom4")
+
+[node name="Slot3" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(601, 152)
+scale = Vector2(2, 2)
+texture = ExtResource("1_8rom4")
+
+[node name="Slot4" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(635, 152)
+scale = Vector2(2, 2)
+texture = ExtResource("1_8rom4")
+
+[node name="Slot5" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(669, 152)
+scale = Vector2(2, 2)
+texture = ExtResource("1_8rom4")
+
+[node name="Slot6" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(703, 152)
+scale = Vector2(2, 2)
+texture = ExtResource("1_8rom4")
+
+[node name="Slot7" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(737, 152)
+scale = Vector2(2, 2)
+texture = ExtResource("1_8rom4")
+
+[node name="Slot8" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+position = Vector2(771, 152)
+scale = Vector2(2, 2)
+texture = ExtResource("1_8rom4")

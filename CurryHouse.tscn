@@ -1,11 +1,18 @@
-[gd_scene load_steps=13 format=3 uid="uid://bfijrcf7xuye0"]
+[gd_scene load_steps=19 format=3 uid="uid://bfijrcf7xuye0"]
 
 [ext_resource type="Texture2D" uid="uid://bm51uhforsftj" path="res://CurryHouse.png" id="1_cmdyw"]
+[ext_resource type="PackedScene" uid="uid://cs3d5u1fng8nk" path="res://inventory.tscn" id="1_eipum"]
 [ext_resource type="Script" path="res://rope_connection.gd" id="2_3howj"]
 [ext_resource type="PackedScene" uid="uid://dmug1epffv0c2" path="res://player.tscn" id="3_vbs8x"]
 [ext_resource type="Script" path="res://player2.gd" id="4_pfj1q"]
 [ext_resource type="Script" path="res://ScaleEven.gd" id="5_m7vig"]
 [ext_resource type="Script" path="res://Ladder.gd" id="6_rm8ik"]
+[ext_resource type="Script" path="res://DoorController.gd" id="7_y113c"]
+[ext_resource type="Script" path="res://SceneTransitionArea.gd" id="9_smjx4"]
+[ext_resource type="Script" path="res://NPCSpawner.gd" id="11_brhcy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7ccrd"]
+size = Vector2(42, 286)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5gk0e"]
 size = Vector2(640, 8)
@@ -22,75 +29,22 @@ size = Vector2(196, 8)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mvubc"]
 size = Vector2(282, 8)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7ccrd"]
-size = Vector2(42, 286)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nua74"]
+size = Vector2(36, 46)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hjjuu"]
+size = Vector2(33, 42)
 
 [node name="CurryHouse" type="Node2D"]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Inventory" parent="." instance=ExtResource("1_eipum")]
+
+[node name="Background" type="Sprite2D" parent="."]
 z_index = 1
 texture_filter = 1
 position = Vector2(636, 322)
 scale = Vector2(4, 4)
 texture = ExtResource("1_cmdyw")
-
-[node name="Area2D" type="StaticBody2D" parent="."]
-position = Vector2(326, 512)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(310, 6)
-shape = SubResource("RectangleShape2D_5gk0e")
-
-[node name="Area2D4" type="StaticBody2D" parent="."]
-position = Vector2(326, 395)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D4"]
-position = Vector2(94, 7)
-shape = SubResource("RectangleShape2D_jdvnb")
-
-[node name="Area2D6" type="StaticBody2D" parent="."]
-position = Vector2(326, 395)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D6"]
-position = Vector2(335, 7)
-shape = SubResource("RectangleShape2D_g8del")
-
-[node name="Area2D7" type="StaticBody2D" parent="."]
-position = Vector2(326, 395)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D7"]
-position = Vector2(488, 11)
-shape = SubResource("RectangleShape2D_w52qi")
-
-[node name="Area2D5" type="StaticBody2D" parent="."]
-position = Vector2(326, 263)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D5"]
-position = Vector2(94, 7)
-shape = SubResource("RectangleShape2D_jdvnb")
-
-[node name="Area2D8" type="StaticBody2D" parent="."]
-position = Vector2(326, 263)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D8"]
-position = Vector2(433, 15)
-shape = SubResource("RectangleShape2D_mvubc")
-
-[node name="Area2D2" type="StaticBody2D" parent="."]
-position = Vector2(326, 512)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
-position = Vector2(634, -146)
-rotation = 1.5708
-shape = SubResource("RectangleShape2D_5gk0e")
-
-[node name="Area2D3" type="StaticBody2D" parent="."]
-position = Vector2(-318, 512)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D3"]
-position = Vector2(634, -146)
-rotation = 1.5708
-shape = SubResource("RectangleShape2D_5gk0e")
 
 [node name="Players" type="Node2D" parent="."]
 z_index = 2
@@ -104,11 +58,13 @@ z_index = 1
 position = Vector2(980, 398)
 scale = Vector2(4, 4)
 script = ExtResource("4_pfj1q")
+disable_pickup = true
 
 [node name="Player1" parent="Players" instance=ExtResource("3_vbs8x")]
 z_index = 1
 position = Vector2(931, 400)
 scale = Vector2(4, 4)
+disable_pickup = true
 
 [node name="Line2D" type="Line2D" parent="Players"]
 z_index = 2
@@ -121,10 +77,100 @@ editor_draw_limits = true
 editor_draw_drag_margin = true
 script = ExtResource("5_m7vig")
 
-[node name="Area2D9" type="Area2D" parent="."]
+[node name="Ladder" type="Area2D" parent="."]
 position = Vector2(532, 671)
 script = ExtResource("6_rm8ik")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D9"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ladder"]
 position = Vector2(25, -301)
 shape = SubResource("RectangleShape2D_7ccrd")
+
+[node name="Collisions" type="Node" parent="."]
+
+[node name="Floor" type="StaticBody2D" parent="Collisions"]
+position = Vector2(326, 512)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Floor"]
+position = Vector2(310, 6)
+shape = SubResource("RectangleShape2D_5gk0e")
+
+[node name="Level2-Left" type="StaticBody2D" parent="Collisions"]
+position = Vector2(326, 395)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Level2-Left"]
+position = Vector2(94, 7)
+shape = SubResource("RectangleShape2D_jdvnb")
+
+[node name="Level2-Right2" type="StaticBody2D" parent="Collisions"]
+position = Vector2(326, 395)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Level2-Right2"]
+position = Vector2(335, 7)
+shape = SubResource("RectangleShape2D_g8del")
+
+[node name="Level2-Right1" type="StaticBody2D" parent="Collisions"]
+position = Vector2(326, 395)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Level2-Right1"]
+position = Vector2(488, 11)
+shape = SubResource("RectangleShape2D_w52qi")
+
+[node name="Level3-Left" type="StaticBody2D" parent="Collisions"]
+position = Vector2(326, 263)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Level3-Left"]
+position = Vector2(94, 7)
+shape = SubResource("RectangleShape2D_jdvnb")
+
+[node name="Level3-Right" type="StaticBody2D" parent="Collisions"]
+position = Vector2(326, 263)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Level3-Right"]
+position = Vector2(433, 15)
+shape = SubResource("RectangleShape2D_mvubc")
+
+[node name="Wall_right" type="StaticBody2D" parent="Collisions"]
+position = Vector2(326, 512)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Wall_right"]
+position = Vector2(634, -146)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_5gk0e")
+
+[node name="Wall_left" type="StaticBody2D" parent="Collisions"]
+position = Vector2(-318, 512)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Wall_left"]
+position = Vector2(634, -146)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_5gk0e")
+
+[node name="DoorController" type="Node" parent="." node_paths=PackedStringArray("background_sprite")]
+script = ExtResource("7_y113c")
+background_sprite = NodePath("../Background")
+
+[node name="NPCSpawner" type="Node" parent="." node_paths=PackedStringArray("door_controller")]
+script = ExtResource("11_brhcy")
+door_controller = NodePath("../DoorController")
+spawn_point = Vector2(620, 482)
+spawn_interval = 1.0
+max_npcs = 1
+test_movement = true
+movement_distance = 30.0
+movement_speed = 50.0
+animation_fps = 6.0
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("9_smjx4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(938, 492)
+shape = SubResource("RectangleShape2D_nua74")
+
+[node name="Area2D2" type="Area2D" parent="."]
+script = ExtResource("9_smjx4")
+target_scene = "res://Kitchen.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
+position = Vector2(800.5, 492)
+shape = SubResource("RectangleShape2D_hjjuu")
