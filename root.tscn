@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://dc0pwwer4kc71"]
+[gd_scene load_steps=3 format=3 uid="uid://dc0pwwer4kc71"]
 
 [ext_resource type="Script" path="res://game_global_controller.gd" id="1_o8x4o"]
+[ext_resource type="Script" path="res://OpenMap.gd" id="2_6rx3c"]
 
 [node name="Root" type="Node2D"]
 script = ExtResource("1_o8x4o")
+
+[node name="MapController" type="Node" parent="."]
+script = ExtResource("2_6rx3c")

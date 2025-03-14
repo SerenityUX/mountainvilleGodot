@@ -18,9 +18,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p52gs"]
 size = Vector2(8.75, 8)
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1ao5t"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_w5px7"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8p1fm"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_36tui"]
 texture = ExtResource("5_8wcyt")
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
@@ -39,8 +39,8 @@ texture = ExtResource("5_8wcyt")
 
 [sub_resource type="TileSet" id="TileSet_dj7mr"]
 physics_layer_0/collision_layer = 1
-physics_layer_0/physics_material = SubResource("PhysicsMaterial_1ao5t")
-sources/0 = SubResource("TileSetAtlasSource_8p1fm")
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_w5px7")
+sources/0 = SubResource("TileSetAtlasSource_36tui")
 
 [sub_resource type="SystemFont" id="SystemFont_x72o7"]
 

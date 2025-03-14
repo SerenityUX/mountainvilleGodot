@@ -1,0 +1,90 @@
+[gd_scene load_steps=12 format=3 uid="uid://q70bpyinyor"]
+
+[ext_resource type="Texture2D" uid="uid://c8vykwitgkp86" path="res://GUIMap.png" id="1_n6cjl"]
+[ext_resource type="Texture2D" uid="uid://cu18301cqpnyg" path="res://MapIndicator.png" id="2_xrdbn"]
+[ext_resource type="Script" path="res://MapIndicatorHover.gd" id="3_4shpf"]
+[ext_resource type="Texture2D" uid="uid://d22esdtj6rigg" path="res://ItemsSlide.png" id="3_6adjn"]
+[ext_resource type="Texture2D" uid="uid://cf310u686a1ab" path="res://Tomato.png" id="4_hsts0"]
+[ext_resource type="Texture2D" uid="uid://dakysn11rmcdc" path="res://Onion.png" id="5_j3658"]
+[ext_resource type="Script" path="res://MountainTransport.gd" id="5_rctq8"]
+[ext_resource type="Texture2D" uid="uid://bybm10hlcnatp" path="res://Garlic.png" id="6_gbdn2"]
+[ext_resource type="Texture2D" uid="uid://cn8kv7iade4ee" path="res://Peppers.png" id="7_p6117"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1bls7"]
+radius = 54.0
+height = 108.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ufmx8"]
+size = Vector2(256.667, 128.333)
+
+[node name="MapUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MapSprite" type="Sprite2D" parent="CenterContainer"]
+texture_filter = 1
+position = Vector2(567, 357)
+scale = Vector2(6, 6)
+texture = ExtResource("1_n6cjl")
+
+[node name="MapIndicator" type="Sprite2D" parent="CenterContainer"]
+texture_filter = 1
+position = Vector2(275, 248)
+texture = ExtResource("2_xrdbn")
+script = ExtResource("3_4shpf")
+hover_area_size_multiplier = 5.0
+show_collision_shape = false
+
+[node name="Area2D" type="Area2D" parent="CenterContainer/MapIndicator"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CenterContainer/MapIndicator/Area2D"]
+shape = SubResource("CapsuleShape2D_1bls7")
+
+[node name="ItemsSlide" type="Sprite2D" parent="CenterContainer/MapIndicator"]
+position = Vector2(-1, 73)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("3_6adjn")
+script = ExtResource("5_rctq8")
+mountains_scene_path = "res://mountains.tscn"
+
+[node name="Tomato" type="Sprite2D" parent="CenterContainer/MapIndicator/ItemsSlide"]
+texture_filter = 1
+position = Vector2(-80, -25)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("4_hsts0")
+
+[node name="Onion" type="Sprite2D" parent="CenterContainer/MapIndicator/ItemsSlide"]
+texture_filter = 1
+position = Vector2(-1.90735e-06, -27.5)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("5_j3658")
+
+[node name="Garlic" type="Sprite2D" parent="CenterContainer/MapIndicator/ItemsSlide"]
+texture_filter = 1
+position = Vector2(47.5, 5)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("6_gbdn2")
+
+[node name="Peppers" type="Sprite2D" parent="CenterContainer/MapIndicator/ItemsSlide"]
+texture_filter = 1
+position = Vector2(-37.5, 25)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("7_p6117")
+
+[node name="Area2D" type="Area2D" parent="CenterContainer/MapIndicator/ItemsSlide"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CenterContainer/MapIndicator/ItemsSlide/Area2D"]
+position = Vector2(0, 0.833313)
+shape = SubResource("RectangleShape2D_ufmx8")
